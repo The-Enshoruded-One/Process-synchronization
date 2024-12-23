@@ -190,7 +190,7 @@ const DiningPhilosophers: React.FC = () => {
                 top: `${y}px`,
                 transform: 'translate(-50%, -50%)',
               }}
-              className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
+              className={`w-24 h-24 rounded-full flex items-center justify-center transition-colors ${
                 philosopher.status === 'thinking'
                   ? 'bg-blue-500'
                   : philosopher.status === 'hungry'
@@ -198,7 +198,7 @@ const DiningPhilosophers: React.FC = () => {
                   : philosopher.status === 'waiting'
                   ? 'bg-orange-500'
                   : 'bg-green-500'
-              }`}
+              }`}              
             >
               <Utensils className="h-8 w-8 text-white" />
               <span className="absolute bottom-0 right-0 text-xs bg-white rounded-full w-5 h-5 flex items-center justify-center">
@@ -208,31 +208,44 @@ const DiningPhilosophers: React.FC = () => {
           );
         })}
         {/* Visualize Forks */}
-        {/* {forks.map((fork, index) => {
-          const angle = ((index + 0.5) * 2 * Math.PI) / PHILOSOPHER_COUNT;
-          const radius = 90;
-          const x = radius * Math.cos(angle) + radius + 30;
-          const y = radius * Math.sin(angle) + radius + 30;
+        {/* Visualize Forks - Only when simulation is running */}
+    {isRunning &&
+      forks.map((_, index) => {
+        const leftPhilosopher = index;
+        const rightPhilosopher = (index + 1) % PHILOSOPHER_COUNT;
 
-          return (
-            <div
-              key={index}
-              style={{
-                position: 'absolute',
-                left: `${x}px`,
-                top: `${y}px`,
-                transform: 'translate(-50%, -50%)',
-              }}
-              className={`w-6 h-6 rounded-full border-2 border-gray-400 ${
-                fork ? 'bg-red-500' : 'bg-gray-300'
+        const isForkInUse =
+          philosophers[leftPhilosopher]?.status === 'eating' ||
+          philosophers[rightPhilosopher]?.status === 'eating';
+
+        const angle = ((index + 0.5) * 2 * Math.PI) / PHILOSOPHER_COUNT;
+        const radius = 90;
+        const x = radius * Math.cos(angle) + radius + 30;
+        const y = radius * Math.sin(angle) + radius + 30;
+
+        return (
+          <div
+            key={index}
+            style={{
+              position: 'absolute',
+              left: `${x}px`,
+              top: `${y}px`,
+              transform: 'translate(-50%, -50%)',
+            }}
+          >
+            <img
+              src="/spoon.png"
+              alt="Spoon"
+              className={`w-8 h-8 transition-transform ${
+                isForkInUse ? 'opacity-100' : 'opacity-10'
               }`}
-            >
-              <span className="text-xs absolute -top-6 left-1/2 transform -translate-x-1/2">
-                Fork {index + 1}
-              </span>
-            </div>
-          );
-        })} */}
+            />
+            <span className="text-xs absolute -top-6 left-1/2 transform -translate-x-1/2">
+              Fork {index + 1}
+            </span>
+          </div>
+        );
+      })}
       </div>
 
       <div className="bg-gray-100 p-4 rounded-lg h-64 overflow-y-auto">
