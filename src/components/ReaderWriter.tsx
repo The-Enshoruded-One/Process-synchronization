@@ -75,6 +75,9 @@ const ReaderWriter: React.FC = () => {
     setBuffer([]);
     setLogs([]);
     addLog('Reset simulation');
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
   };
 
   useEffect(() => {
